@@ -1,44 +1,46 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, FlatList } from 'react-native';
+import { View, TextInput, Button, FlatList, StyleSheet } from 'react-native';
 import CardAtleta from './components/CardAtleta';
 
-const AthleteSearchScreen = ({ addFavorite }: { addFavorite: (athlete: any) => void }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [athletes, setAthletes] = useState<any[]>([]);
+type Athlete = {
+  id: number;
+  name: string;
+  image: string;
+};
+
+export default function AthleteSearchScreen() {
+  const [search, setSearch] = useState<string>('');
+  const [athletes, setAthletes] = useState<Athlete[]>([]);
 
   const searchAthletes = () => {
-    // API call using RapidAPI (substitua com sua chave e endpoint)
-    fetch(`https://api.example.com/athletes?name=${searchQuery}`, {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-host': 'api.example.com',
-        'x-rapidapi-key': 'YOUR_RAPIDAPI_KEY'
-      }
+    // Chamar API da RapidAPI para buscar atletas
+    fetch(`https://api.exemplo.com/athletes?name=${search}`, {
+      headers: { 'X-RapidAPI-Key': 'SUA_CHAVE_DE_API_AQUI' }
     })
     .then(response => response.json())
-    .then(data => {
-      setAthletes(data.results); // Ajuste de acordo com a estrutura da resposta da API
-    })
+    .then(data => setAthletes(data.results))
     .catch(error => console.error(error));
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <TextInput
-        placeholder="Search for an athlete..."
-        value={searchQuery}
-        onChangeText={setSearchQuery}
+        placeholder="Pesquisar atleta"
+        value={search}
+        onChangeText={setSearch}
+        style={styles.input}
       />
-      <Button title="Search" onPress={searchAthletes} />
+      <Button title="Buscar" onPress={searchAthletes} />
       <FlatList
         data={athletes}
-        renderItem={({ item }) => (
-          <CardAtleta athlete={item} addFavorite={addFavorite} />
-        )}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <CardAtleta atleta={item} />}
       />
     </View>
   );
-};
+}
 
-export default AthleteSearchScreen;
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 10 },
+  input: { borderColor: 'gray', borderWidth: 1, marginBottom: 10, padding: 5 }
+});
