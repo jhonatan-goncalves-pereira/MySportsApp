@@ -1,19 +1,38 @@
 import React from 'react';
-import { View, FlatList } from 'react-native';
-import CardAtleta from './components/CardAtleta';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 
-const FavoritePanelScreen = ({ favorites }: { favorites: any[] }) => {
+type Athlete = {
+  id: number;
+  name: string;
+};
+
+type FavoritePanelScreenProps = {
+  route: {
+    params: {
+      favorites: Athlete[];
+    };
+  };
+};
+
+export default function FavoritePanelScreen({ route }: FavoritePanelScreenProps) {
+  const { favorites } = route.params;
+
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         data={favorites}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <CardAtleta athlete={item} addFavorite={() => {}} />
+          <View style={styles.favoriteItem}>
+            <Text>{item.name}</Text>
+          </View>
         )}
-        keyExtractor={item => item.id}
       />
     </View>
   );
-};
+}
 
-export default FavoritePanelScreen;
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 10 },
+  favoriteItem: { padding: 10, borderWidth: 1, borderColor: '#ddd', marginBottom: 10 }
+});
