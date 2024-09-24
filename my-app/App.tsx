@@ -1,28 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import SearchScreen from './screens/SearchScreen';
-import FavoritesScreen from './screens/FavoritesScreen';
+import { Ionicons } from '@expo/vector-icons';
 
+import LoginScreen from './screens/LoginScreen';
+import HomeScreen from './screens/HomeScreen';
+import AthleteSearchScreen from './screens/AthleteSearchScreen';
+import FavoritePanelScreen from './screens/FavoritePanelScreen';
+
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+function HomeTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Pesquisa" component={AthleteSearchScreen} options={{
+        tabBarIcon: ({ color, size }) => (<Ionicons name="search" color={color} size={size} />)
+      }} />
+      <Tab.Screen name="Favoritos" component={FavoritePanelScreen} options={{
+        tabBarIcon: ({ color, size }) => (<Ionicons name="heart" color={color} size={size} />)
+      }} />
+    </Tab.Navigator>
+  );
+}
+
 export default function App() {
-  const [favorites, setFavorites] = useState<any[]>([]);
-
-  const addFavorite = (athlete: any) => {
-    setFavorites([...favorites, athlete]);
-  };
-
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Search">
-          {() => <SearchScreen addFavorite={addFavorite} />}
-        </Tab.Screen>
-        <Tab.Screen name="Favorites">
-          {() => <FavoritesScreen favorites={favorites} />}
-        </Tab.Screen>
-      </Tab.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}>
+          {() => <HomeTabs />}
+        </Stack.Screen>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

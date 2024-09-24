@@ -2,7 +2,7 @@ import React from 'react';
 import { View, FlatList } from 'react-native';
 import CardAtleta from './components/CardAtleta';
 
-const FavoritesScreen = ({ favorites }: { favorites: any[] }) => {
+const FavoritePanelScreen = ({ favorites }: { favorites: any[] }) => {
   return (
     <View>
       <FlatList
@@ -16,4 +16,4 @@ const FavoritesScreen = ({ favorites }: { favorites: any[] }) => {
   );
 };
 
-export default FavoritesScreen;
+export default FavoritePanelScreen;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, FlatList } from 'react-native';
 import CardAtleta from './components/CardAtleta';
 
-const SearchScreen = ({ addFavorite }: { addFavorite: (athlete: any) => void }) => {
+const AthleteSearchScreen = ({ addFavorite }: { addFavorite: (athlete: any) => void }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [athletes, setAthletes] = useState<any[]>([]);
 
@@ -41,4 +41,4 @@ const SearchScreen = ({ addFavorite }: { addFavorite: (athlete: any) => void }) 
   );
 };
 
-export default SearchScreen;
+export default AthleteSearchScreen;
